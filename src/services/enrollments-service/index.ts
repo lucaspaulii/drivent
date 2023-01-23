@@ -1,5 +1,5 @@
 import { request } from "@/utils/request";
-import { notFoundError, requestError } from "@/errors";
+import { notFoundError } from "@/errors";
 import addressRepository, { CreateAddressParams } from "@/repositories/address-repository";
 import enrollmentRepository, { CreateEnrollmentParams } from "@/repositories/enrollment-repository";
 import { exclude } from "@/utils/prisma-utils";
@@ -14,7 +14,13 @@ async function getAddressFromCEP(cep: string) {
   if (result.data.erro === true) {
     throw notFoundError();
   }
-  const returnData = {
+  const returnData: {
+    logradouro: string,
+    complemento: string,
+    bairro: string,
+    cidade: string,
+    uf: string,
+  } = {
     logradouro: result.data.logradouro,
     complemento: result.data.complemento,
     bairro: result.data.bairro,
